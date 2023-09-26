@@ -4,7 +4,6 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=200, verbose_name='название')
     description = models.TextField(blank=True, verbose_name='описание')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
 
     def __str__(self):
         return f'{self.name}({self.description})'
@@ -14,7 +13,6 @@ class Category(models.Model):
         verbose_name_plural = 'категории'
 
 
-# Модель продукта
 class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name='название')
     description = models.TextField(blank=True, verbose_name='описание')
@@ -30,3 +28,17 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200, verbose_name="имя")
+    phone = models.CharField(max_length=20, verbose_name="телефон")
+    email = models.EmailField(max_length=200, verbose_name="почта")
+    address = models.TextField(blank=True, verbose_name="адрес")
+
+    def __str__(self):
+        return f'{self.name} {self.phone} {self.email} {self.address}'
+
+    class Meta:
+        verbose_name = 'контакт'
+        verbose_name_plural = 'контакты'
