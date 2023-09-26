@@ -2,8 +2,13 @@ import os
 
 from django.shortcuts import render
 
+from main.models import Product
+
 
 def home(request):
+    latest_products = Product.objects.order_by('-created_at')[:5]
+    print(latest_products)
+
     return render(request, 'main/home.html')
 
 
