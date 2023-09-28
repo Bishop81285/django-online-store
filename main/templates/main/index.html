@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% load custom %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">Добро пожаловать в BRPG&CRPG store!</h1>
+        <p>Здесь вы найдете все, что нужно для настольных и компьютерных ролевых игр: книги, фигурки, кубики, аксессуары
+            и многое другое.
+        </p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <div class="pricing-header p-3 pb-md-4 mx-auto">
+            <h3>Каталог товаров:</h3>
+        </div>
+    </header>
+    <div class="row">
+        {% for object in object_list %}
+        <div class="col-6 mt-3">
+            <div class="card">
+                <img src="{% path_tag object.image %}" alt="..."/>
+                <div class="card-body">
+                    <h5 class="card-title">{{ object.name }}</h5>
+                    <p class="card-text">
+                        {% if object.description|length > 100 %}
+                        {{ object.description|slice:100 }}...
+                        {% else %}
+                        {{ object.description }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        {{ object.price }} $
+                    </p>
+                    <a href="{% url 'main:product' object.pk %}" class="btn btn-primary float-right">Купить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div><!-- /container -->
+{% endblock %}
