@@ -1,29 +1,34 @@
-import os
+from django.shortcuts import render, get_object_or_404
 
-from django.shortcuts import render
-
-from main.models import Product
+from main.models import Product, Contact
 
 
-def home(request):
-    latest_products = Product.objects.order_by('-created_at')[:5]
-    print(latest_products)
-
-    return render(request, 'main/home.html')
-
-
-def save_feedback(data):
-    feedbacks_path = os.path.join(os.path.dirname(__file__), 'feedbacks')
-    feedback_file = open(os.path.join(feedbacks_path, 'feedback.txt'), 'a')
-
-    feedback_file.write(f"{data['name']}, {data['phone']}, {data['message']}\n")
-
-    feedback_file.close()
+def index(request):
+    products = Product.objects.all()[:6]
+    context = {'object_list': products}
+    return render(request, 'main/index.html', context)
 
 
 def contacts(request):
-    if request.method == 'POST':
-        data = request.POST
-        save_feedback(data)
+    contacts_list = Contact.objects.first()
+    context = {
+        'object_list': contacts_list,
+    }
 
-    return render(request, 'main/contacts.html')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        print(f"{name}({email}):{message}")
+
+    return render(request, 'main/contacts.html', context)
+
+
+def product(request, pk):
+    products_list = get_object_or_404(Product, pk=pk)
+    context = {
+        'object_list': products_list,
+    }
+
+    return render(request, 'main/product.html', context)
