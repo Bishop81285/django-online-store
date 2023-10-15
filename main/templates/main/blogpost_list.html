@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load custom %}
+{% block title %}Блог{% endblock %}
+{% block content %}
+<div class="jumbotron">
+</div>
+
+<div class="container">
+    <h1>Блог</h1>
+    <a href="{% url 'main:blogpost-create' %}" class="btn btn-primary">Создать пост</a>
+    <div class="row">
+        {% for object in object_list %}
+        <div class="col-6 mt-3">
+            <div class="card">
+                <img src="{% path_tag object.preview %}" alt="..."/>
+                <div class="card-body">
+                    <h5 class="card-title">{{ object.title }}</h5>
+                    <p class="card-text">
+                        {% if object.content|length > 100 %}
+                        {{ object.content|slice:100 }}...
+                        {% else %}
+                        {{ object.content }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        {{ object.created_at|date:"d.m.Y" }}
+                    </p>
+                    <a href="{% url 'main:blogpost-detail' object.pk %}" class="btn btn-primary float-right">Читать
+                        далее</a>
+                    <a href="{% url 'main:blogpost-update' object.pk %}" class="btn btn-primary">Изменить пост</a>
+                    <a href="{% url 'main:blogpost-delete' object.pk %}" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

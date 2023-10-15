@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load custom %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+<div class="jumbotron" style="background-color: white">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="card border-light mt-5">
+                <div class="row g-0">
+                    <div class="col-6">
+                        <img src="{{ object.preview|path_filter }}" alt="..." class="img-fluid"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ object.title }}</h5>
+                            <p class="card-text">{{ object.content }}</p>
+                            <p class="card-text"><small
+                                    class="text-body-secondary">{{ object.created_at|date:"d.m.Y" }}</small>
+                            </p>
+                            <p class="card-text">
+                                Просмотров: {{ object.views_count }}
+                            </p>
+                            {% if object.is_published %}
+                            <p class="card-text">
+                                Опубликовано
+                            </p>
+                            {% else %}
+                            <p class="card-text">
+                                Черновик
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

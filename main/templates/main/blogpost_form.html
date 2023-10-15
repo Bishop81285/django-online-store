@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% block title %}Создать пост{% endblock %}
+{% block content %}
+<div class="jumbotron" style="background-color: white">
+    <div class="container" style="margin-top: 20px;">
+        {% if not object %}
+            <h1>Создать пост</h1>
+        {% else %}
+            <h1>Редактировать пост</h1>
+        {% endif %}
+        <div class="row" style="margin-top: 20px;">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Сохранить" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
