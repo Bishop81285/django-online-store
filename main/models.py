@@ -42,3 +42,20 @@ class Contact(models.Model):
     class Meta:
         verbose_name = 'контакт'
         verbose_name_plural = 'контакты'
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200, verbose_name='название')
+    slug = models.SlugField(max_length=200, verbose_name='адрес')
+    content = models.TextField(blank=True, verbose_name='текст')
+    preview = models.ImageField(upload_to='main/', blank=True, verbose_name='превью')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
+    is_published = models.BooleanField(default=False, verbose_name='опубликовано')
+    views_count = models.PositiveIntegerField(default=0, verbose_name='просмотры')
+
+    def __str__(self):
+        return f'{self.title} {self.created_at} {self.views_count}'
+
+    class Meta:
+        verbose_name = 'пост'
+        verbose_name_plural = 'посты'
