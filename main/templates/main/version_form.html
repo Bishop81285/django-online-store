@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% block title %}Добавить версию{% endblock %}
+{% block content %}
+<div class="jumbotron" style="background-color: white">
+    <div class="container" style="margin-top: 20px;">
+        <h2>Добавить версию для продукта</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
