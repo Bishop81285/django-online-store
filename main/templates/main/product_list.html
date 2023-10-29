@@ -17,6 +17,7 @@
     <header>
         <div class="pricing-header p-3 pb-md-4 mx-auto">
             <h3>Каталог товаров:</h3>
+            <a href="{% url 'main:product-create' %}" class="btn btn-success mb-3">Создать продукт</a>
         </div>
     </header>
     <div class="row">
@@ -33,10 +34,19 @@
                         {{ object.description }}
                         {% endif %}
                     </p>
+                    {% with current_version=current_versions.object.id %}
+                        {% if current_version %}
+                            <p class="card-text">
+                                Текущая версия: {{ current_version.version_name }} ({{ current_version.version_number }})
+                            </p>
+                        {% endif %}
+                    {% endwith %}
                     <p class="card-text">
                         {{ object.price }} $
                     </p>
                     <a href="{% url 'main:product_detail' object.pk %}" class="btn btn-primary float-right">Купить</a>
+                    <a href="{% url 'main:product-update' object.pk %}" class="btn btn-warning">Редактировать</a>
+                    <a href="{% url 'main:product-delete' object.pk %}" class="btn btn-danger">Удалить</a>
                 </div>
             </div>
         </div>

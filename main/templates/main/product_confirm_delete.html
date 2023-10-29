@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% block title %}Удалить товар{% endblock %}
+{% block content %}
+<div class="jumbotron" style="background-color: white">
+    <div class="container">
+        <h1>Удалить товар</h1>
+        <p>Вы уверены, что хотите удалить товар "{{ object.name }}"?</p>
+        <form method="post" action="{% url 'main:product-delete' object.pk %}">
+            {% csrf_token %}
+            <input type="submit" value="Да, удалить" class="btn btn-danger">
+            <input type="button" value="Нет, отменить" class="btn btn-secondary" onclick="window.history.back()">
+        </form>
+    </div>
+</div>
+{% endblock %}
