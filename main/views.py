@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 
-from main.models import Product, Contact, BlogPost
+from main.forms import ProductForm, VersionForm, VersionFormSet
+from main.models import Product, Contact, BlogPost, Version
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -12,6 +13,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 class ProductListView(ListView):
     model = Product
     paginate_by = 6
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_versions'] = {product.id: product.versions.filter(is_current=True).first() for product in
+                                       context['object_list']}
+        return context
 
 
 def contacts(request):
@@ -36,6 +43,51 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('main:product_list')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('main:product_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['version_formset'] = VersionFormSet(self.request.POST, instance=self.object)
+        else:
+            context['version_formset'] = VersionFormSet(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        version_formset = context['version_formset']
+        if version_formset.is_valid():
+            version_formset.save()
+            return super().form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('main:product_list')
+
+
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+
+    def form_valid(self, form):
+        form.instance.product = Product.objects.get(pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('main:product_detail', kwargs={'pk': self.kwargs['pk']})
 
 
 class BlogPostListView(ListView):
