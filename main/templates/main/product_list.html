@@ -27,6 +27,11 @@
                 <img src="{% path_tag object.image %}" alt="..."/>
                 <div class="card-body">
                     <h5 class="card-title">{{ object.name }}</h5>
+                    {% if object.active_version %}
+                    <p class="card-text">
+                        Активная версия: {{ object.active_version.version_name }} ({{ object.active_version.version_number }})
+                    </p>
+                    {% endif %}
                     <p class="card-text">
                         {% if object.description|length > 100 %}
                         {{ object.description|slice:100 }}...
@@ -34,13 +39,6 @@
                         {{ object.description }}
                         {% endif %}
                     </p>
-                    {% with current_version=current_versions.object.id %}
-                        {% if current_version %}
-                            <p class="card-text">
-                                Текущая версия: {{ current_version.version_name }} ({{ current_version.version_number }})
-                            </p>
-                        {% endif %}
-                    {% endwith %}
                     <p class="card-text">
                         {{ object.price }} $
                     </p>

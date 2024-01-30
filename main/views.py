@@ -16,8 +16,8 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_versions'] = {product.id: product.versions.filter(is_current=True).first() for product in
-                                       context['object_list']}
+        for product in context['object_list']:
+            product.active_version = product.versions.filter(is_current=True).first()
         return context
 
 

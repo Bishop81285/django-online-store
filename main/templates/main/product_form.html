@@ -10,19 +10,21 @@
         {% endif %}
         <div class="row" style="margin-top: 20px;">
             <div class="col-md-6">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" value="Сохранить" class="btn btn-primary">
-                </form>
-            </div>
-            <div class="col-md-6">
-                <form method="post">
-                    {% csrf_token %}
                     {{ version_formset.management_form }}
                     {% for form in version_formset %}
-                        {{ form.as_p }}
+                    {{ form.as_p }}
+                    {% if not forloop.last %}
+                    <hr>
+                    {% endif %}
                     {% endfor %}
+                    {{ version_formset.non_form_errors }}
+                    {% for form in version_formset %}
+                        {{ form.errors }}
+                    {% endfor %}
+                    <input type="submit" value="Сохранить" class="btn btn-primary">
                 </form>
             </div>
         </div>
